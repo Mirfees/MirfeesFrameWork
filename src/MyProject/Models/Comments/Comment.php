@@ -2,26 +2,112 @@
 
 namespace MyProject\Models\Comments;
 
+use MyProject\Exceptions\InvalidArgumentException;
+use MyProject\Exceptions\UnauthorizedException;
+use MyProject\Models\ActiveRecordEntity\ActiveRecordEntity;
 use MyProject\Models\Users\User;
+use MyProject\Services\Db;
 
-class Comment
+class Comment extends ActiveRecordEntity
 {
-    private $text;
-    private $author;
+    protected $authorId;
 
-    public function __construct(string $text, User $author)
+    protected $articleId;
+
+    protected $commentText;
+
+    protected $publicationDate;
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorId()
     {
-        $this->text = $text;
-        $this->author = $author;
+        return $this->authorId;
     }
 
-    public function getText(): string
+    /**
+     * @return mixed
+     */
+    public function getArticleId()
     {
-        return $this->text;
+        return $this->articleId;
     }
 
-    public function getAuthor(): User
+    /**
+     * @return mixed
+     */
+    public function getCommentText()
     {
-        return $this->author;
+        return $this->commentText;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublicationDate()
+    {
+        return $this->publicationDate;
+    }
+
+    /**
+     * @param mixed $authorId
+     */
+    public function setAuthorId(int $authorId): void
+    {
+        $this->authorId = $authorId;
+    }
+
+    /**
+     * @param mixed $articleId
+     */
+    public function setArticleId(int $articleId): void
+    {
+        $this->articleId = $articleId;
+    }
+
+    /**
+     * @param mixed $commentText
+     */
+    public function setCommentText(string $commentText): void
+    {
+        $this->commentText = $commentText;
+    }
+
+    /**
+     * @param mixed $publicationDate
+     */
+    public function setPublicationDate($publicationDate): void
+    {
+        $this->publicationDate = $publicationDate;
+    }
+
+    public static function addComment(string $commentText, User $author, $articleId)
+    {
+        if($commentText === '') {
+            throw new InvalidArgumentException('Текст не введен');
+        }
+
+        $comment = new Comment();
+
+        $comment->setCommentText($commentText);
+        $comment->setArticleId($articleId);
+        $comment->setAuthorId($author->getId());
+
+        $comment->save();
+
+        $comment->setPublicationDate(Comment::findOneByColumn('id', $comment->getId())->getPublicationDate());
+        var_dump($comment);
+
+    }
+
+    public static function getAllComments()
+    {
+        //TODO: Создать метод, который возвращает все комментарии, которые были написаны для статьи
+    }
+
+    protected static function getTableName(): string
+    {
+        return 'comments';
     }
 }
