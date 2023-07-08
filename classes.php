@@ -255,8 +255,3 @@ class EnglishHuman extends HumanAbstract {
     }
 
 }
-
-class test
-{
-
-}
