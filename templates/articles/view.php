@@ -19,4 +19,17 @@
     <?php elseif (empty($user)): ?>
     <a href="/users/login">Войдите в аккаунт, чтобы комментировать</a>
     <?php endif; ?>
+
+    <?php if(!empty($comments)): ?>
+        <p class="comments">
+            <?php foreach ($comments as $comment): ?>
+                <?php $author = $comment->getAuthor(); ?>
+                <p class="comment-container">
+                    <strong class="name"><?= $author->getNickName(); ?></strong><br>
+                    <strong class="date"><?= $comment->getPublicationDate(); ?></strong><br>
+                    <p><?= $comment->getCommentText(); ?></p>
+                </p>
+            <?php endforeach; ?>
+        </p>
+    <?php endif; ?>
 <?php include __DIR__ . '/../footer.php'; ?>
