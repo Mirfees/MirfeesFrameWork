@@ -85,14 +85,4 @@ class ArticlesController extends AbstractController
         $this->view->renderHtml('articles/edit.php', ['article' => $article]);
 
     }
-
-    public function create(): void
-    {
-        $article = new Article();
-        $article->setName('Новая статья1 name');
-        $article->setText('Новая статья1 text');
-        $article->setAuthorId('1');
-        $article->save();
-    }
-
 }
