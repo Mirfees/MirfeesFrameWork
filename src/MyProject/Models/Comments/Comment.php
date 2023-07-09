@@ -11,12 +11,17 @@ use function MongoDB\Driver\Monitoring\addSubscriber;
 
 class Comment extends ActiveRecordEntity
 {
+
+    /** @var int */
     protected $authorId;
 
+    /** @var int */
     protected $articleId;
 
+    /** @var string */
     protected $commentText;
 
+    /** @var string */
     protected $publicationDate;
 
     /**
@@ -88,8 +93,10 @@ class Comment extends ActiveRecordEntity
         $this->publicationDate = $publicationDate;
     }
 
-    public static function addComment(string $commentText, User $author, $articleId)
+    public static function add(array $fields, User $author, $articleId)
     {
+        extract($fields);
+
         if($commentText === '') {
             throw new InvalidArgumentException('Текст не введен');
         }
@@ -105,6 +112,20 @@ class Comment extends ActiveRecordEntity
         $comment->setPublicationDate(Comment::findOneByColumn('id', $comment->getId())->getPublicationDate());
     }
 
+    public function edit(array $fields)
+    {
+        extract($fields);
+
+        if ($text === '') {
+            throw new InvalidArgumentException('Не введен текст комментария');
+        }
+
+        $this->setCommentText($text);
+
+        $this->save();
+
+        return $this;
+    }
 
     public static function getAllComments(int $articleId): array
     {
