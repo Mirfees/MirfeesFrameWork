@@ -90,7 +90,6 @@ class Article extends ActiveRecordEntity
         return $article;
     }
 
-
     public function updateFromArray(array $fields): Article
     {
         extract($fields);
