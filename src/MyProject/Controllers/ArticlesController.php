@@ -28,10 +28,22 @@ class ArticlesController extends AbstractController
         ]);
     }
 
-    public function delete(int $articleId) {
+    public function delete(int $articleId)
+    {
+        if ($this->user->getRole() !== 'admin') {
+            throw new ForbiddenException('Недостаточно прав!');
+        }
+
         $article = Article::getById($articleId);
 
+        if ($article === null) {
+            throw new NotFoundException('Статья не найдена');
+        }
+
         $article->delete();
+
+        header('Location /', true, 200);
+        exit();
     }
 
     public function add(): void
@@ -61,7 +73,6 @@ class ArticlesController extends AbstractController
     public function edit(int $articleId): void
     {
         $article = Article::getById($articleId);
-
 
         if($article === null) {
             throw new NotFoundException();
