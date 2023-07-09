@@ -1,4 +1,10 @@
-<?php include __DIR__ . '/../header.php'; ?>
+<?php
+/**
+ * @var \MyProject\Models\Comments\Comment $comment
+ * @var \MyProject\Models\Articles\Article $article
+ * @var \MyProject\Models\Users\User $user
+ */
+include __DIR__ . '/../header.php'; ?>
     <h1><?= $article->getName() ?></h1>
     <p><?= $article->getText() ?></p>
     <p>Автор: <?php echo $article->getAuthor()->getNickname();  ?></p>
@@ -20,15 +26,20 @@
     <a href="/users/login">Войдите в аккаунт, чтобы комментировать</a>
     <?php endif; ?>
 
-    <?php if(!empty($comments)): ?>
+    <?php if (!empty($comments)): ?>
         <p class="comments">
             <?php foreach ($comments as $comment): ?>
                 <?php $author = $comment->getAuthor(); ?>
-                <p class="comment-container">
+                <p class="comment-container" id="<?= $comment->getId() ?>">
                     <strong class="name"><?= $author->getNickName(); ?></strong><br>
                     <strong class="date"><?= $comment->getPublicationDate(); ?></strong><br>
-                    <p><?= $comment->getCommentText(); ?></p>
-                </p>
+                    <p><?= $comment->getCommentText(); ?></p><br>
+                    <?php if (!empty($user)): ?>
+                        <?php if ($user->getRole() === 'admin' || $user->getId() === $author->getId()): ?>
+                            <a href="/comments/<?= $comment->getId() ?>/edit">Редактировать комментарий</a> <!-- //TODO: Реализовать отображение кнопки редактировать комментарий -->
+                        <?php endif; ?>
+                    <?php endif; ?>
+        </p>
             <?php endforeach; ?>
         </p>
     <?php endif; ?>
