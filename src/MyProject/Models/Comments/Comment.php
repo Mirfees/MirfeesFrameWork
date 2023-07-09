@@ -7,6 +7,7 @@ use MyProject\Exceptions\UnauthorizedException;
 use MyProject\Models\ActiveRecordEntity\ActiveRecordEntity;
 use MyProject\Models\Users\User;
 use MyProject\Services\Db;
+use function MongoDB\Driver\Monitoring\addSubscriber;
 
 class Comment extends ActiveRecordEntity
 {
@@ -48,6 +49,11 @@ class Comment extends ActiveRecordEntity
     public function getPublicationDate()
     {
         return $this->publicationDate;
+    }
+
+    public function getAuthor(): User
+    {
+        return $user = User::getById($this->getAuthorId());
     }
 
     /**
@@ -97,13 +103,14 @@ class Comment extends ActiveRecordEntity
         $comment->save();
 
         $comment->setPublicationDate(Comment::findOneByColumn('id', $comment->getId())->getPublicationDate());
-        var_dump($comment);
-
     }
 
-    public static function getAllComments()
+
+    public static function getAllComments(int $articleId): array
     {
-        //TODO: Создать метод, который возвращает все комментарии, которые были написаны для статьи
+        $db = Db::getInstance();
+
+        return $allComments = $db->query('SELECT * FROM ' . self::getTableName() . ' WHERE article_id=:article_id;', ['article_id' => $articleId], self::class);
     }
 
     protected static function getTableName(): string
