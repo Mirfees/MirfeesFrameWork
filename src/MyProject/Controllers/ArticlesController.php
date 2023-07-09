@@ -9,12 +9,14 @@ use MyProject\Exceptions\UnauthorizedException;
 use MyProject\Models\Articles\Article;
 use MyProject\View\View;
 use MyProject\Models\Users\User;
+use MyProject\Models\Comments\Comment;
 
 class ArticlesController extends AbstractController
 {
     public function view(int $articleId)
     {
         $article = Article::getById($articleId);
+        $comments = Comment::getAllComments($articleId);
 
         if ($article === null) {
             throw new NotFoundException();
@@ -22,6 +24,7 @@ class ArticlesController extends AbstractController
 
         $this->view->renderHtml('articles/view.php', [
             'article' => $article,
+            'comments' => $comments,
         ]);
     }
 
