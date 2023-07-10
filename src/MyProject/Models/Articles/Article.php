@@ -35,6 +35,22 @@ class Article extends ActiveRecordEntity
     }
 
     /**
+     * @param string $createdAt
+     */
+    public function setCreatedAt(string $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
+    }
+
+    /**
      * @return string
      */
     public function getText(): string
@@ -86,6 +102,8 @@ class Article extends ActiveRecordEntity
         $article->setText($text);
 
         $article->save();
+
+        $article->setCreatedAt(Article::findOneByColumn('id', $article->getId())->getCreatedAt());
 
         return $article;
     }
