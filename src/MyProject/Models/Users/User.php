@@ -105,9 +105,9 @@ class User extends ActiveRecordEntity
     }
 
     /**
-     * @param mixed $isConfirmed
+     * @param int $isConfirmed
      */
-    public function setIsConfirmed($isConfirmed): void
+    public function setIsConfirmed(int $isConfirmed): void
     {
         $this->isConfirmed = $isConfirmed;
     }
