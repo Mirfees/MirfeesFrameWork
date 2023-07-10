@@ -55,7 +55,7 @@ class CommentsController extends AbstractController
             throw new UnauthorizedException('Необходимо зайти в аккаунт');
         }
 
-        if ($this->user->getRole() !== 'admin' or $comment->getAuthorId() != $this->user->getId()) {
+        if ($this->user->getRole() !== 'admin' and $comment->getAuthorId() != $this->user->getId()) {
             throw new ForbiddenException('Недостаточно прав!');
         }
 
@@ -82,8 +82,11 @@ class CommentsController extends AbstractController
         }
 
         $comment = Comment::getById($commentId);
-
+        $articleId = $comment->getArticleId();
         $comment->delete();
+
+        header('Location: /articles/' . $articleId, true, 302);
+        exit();
 
     }
 }
