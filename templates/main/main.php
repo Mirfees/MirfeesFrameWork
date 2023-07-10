@@ -1,6 +1,6 @@
 <?php
 /**
- * $var array $articles
+ * @var array $articles
  * @var \MyProject\Models\Articles\Article $article
  */
 include __DIR__ . '/../header.php'; ?>
