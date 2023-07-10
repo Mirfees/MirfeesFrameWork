@@ -6,6 +6,7 @@
  */
 include __DIR__ . '/../header.php'; ?>
     <h1><?= $article->getName() ?></h1>
+    <strong><?= $article->getCreatedAt() ?></strong>
     <p><?= $article->getText() ?></p>
     <p>Автор: <?php echo $article->getAuthor()->getNickname();  ?></p>
 
@@ -36,7 +37,8 @@ include __DIR__ . '/../header.php'; ?>
                     <p><?= $comment->getCommentText(); ?></p><br>
                     <?php if (!empty($user)): ?>
                         <?php if ($user->getRole() === 'admin' || $user->getId() === $author->getId()): ?>
-                            <a href="/comments/<?= $comment->getId() ?>/edit">Редактировать комментарий</a> <!-- //TODO: Реализовать отображение кнопки редактировать комментарий -->
+                            <a href="/comments/<?= $comment->getId() ?>/edit">Редактировать комментарий</a>
+                            <a href="/comments/<?= $comment->getId() ?>/delete">Удалить комментарий</a>
                         <?php endif; ?>
                     <?php endif; ?>
         </p>
