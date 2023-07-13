@@ -28,6 +28,15 @@ class ArticlesController extends AbstractController
         ]);
     }
 
+    public function viewAllArticlesAdminer()
+    {
+        $articles = Article::findAll();
+
+        $this->view->renderHtml('adminer/articles/articles.php', [
+            'articles' => $articles,
+        ]);
+    }
+
     public function delete(int $articleId)
     {
         if ($this->user->getRole() !== 'admin') {
@@ -60,14 +69,14 @@ class ArticlesController extends AbstractController
             try {
                 $article = Article::createFromArray($_POST, $this->user);
             } catch (InvalidArgumentException $e) {
-                $this->view->renderHtml('articles/add.php', ['error' => $e->getMessage()]);
+                $this->view->renderHtml('adminer/articles/add.php', ['error' => $e->getMessage()]);
                 return;
             }
 
             header('Location: /articles/' . $article->getId(), true, 302);
             exit();
         }
-        $this->view->renderHtml('articles/add.php');
+        $this->view->renderHtml('adminer/articles/add.php');
     }
 
     public function edit(int $articleId): void
@@ -90,13 +99,13 @@ class ArticlesController extends AbstractController
             try {
                 $article->updateFromArray($_POST);
             } catch (InvalidArgumentException $e) {
-                $this->view->renderHtml('articles/edit.php', ['error' => $e->getMessage(), 'article' => $article]);
+                $this->view->renderHtml('adminer/articles/edit.php', ['error' => $e->getMessage(), 'article' => $article]);
             }
 
             header('Location: /articles/' . $article->getId(), true, 302);
             exit();
         }
-        $this->view->renderHtml('articles/edit.php', ['article' => $article]);
+        $this->view->renderHtml('adminer/articles/edit.php', ['article' => $article]);
 
     }
 }

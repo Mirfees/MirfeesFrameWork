@@ -6,7 +6,7 @@ use MyProject\Models\Users\User;
 use MyProject\Models\Users\UsersAuthService;
 use MyProject\View\View;
 
-class AbstractController
+abstract class AbstractController
 {
     protected $view;
 
