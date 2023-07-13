@@ -1,3 +1,5 @@
 <footer>
-    <p>footer</p>
+    <div class="container">
+
+    </div>
 </footer>
