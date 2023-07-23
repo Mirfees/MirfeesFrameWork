@@ -20,7 +20,7 @@ include __DIR__ . '/../header.php'; ?>
     </form>
         <?php if ($user->getRole() === 'admin'): ?>
         <p>
-            <a href="<?= $article->getId() . '/edit'?>">Редактировать статью</a>
+            <a href="/adminer/articles/<?= $article->getId() . '/edit'?>">Редактировать статью</a>
         </p>
         <?php endif; ?>
     <?php elseif (empty($user)): ?>
