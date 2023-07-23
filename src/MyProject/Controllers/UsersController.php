@@ -93,4 +93,13 @@ class UsersController extends AbstractController
         exit();
     }
 
+    public function viewAllUsersAdminer()
+    {
+        $users = User::findAll();
+
+        $this->view->renderHtml('adminer/users/users.php', [
+            'users' => $users,
+        ]);
+    }
+
 }
