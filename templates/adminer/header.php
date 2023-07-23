@@ -14,10 +14,10 @@
                         <a class="nav-link" href="/adminer/articles">Статьи</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Комментарии</a>
+                        <a class="nav-link" href="/adminer/comments">Комментарии</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Пользователи</a>
+                        <a class="nav-link" href="/adminer/users">Пользователи</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Личный кабинет</a>
