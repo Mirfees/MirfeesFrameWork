@@ -105,6 +105,14 @@ class User extends ActiveRecordEntity
     }
 
     /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
      * @param int $isConfirmed
      */
     public function setIsConfirmed(int $isConfirmed): void
