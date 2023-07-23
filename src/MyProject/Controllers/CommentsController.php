@@ -75,6 +75,38 @@ class CommentsController extends AbstractController
         $this->view->renderHtml('comments/edit.php', ['comment' => $comment]);
     }
 
+    public function editAdminer ($commentId): void
+    {
+        $comment = Comment::getById($commentId);
+
+        if ($comment === null) {
+            throw new ForbiddenException('Не найдено комментария');
+        }
+
+        if ($this->user === null) {
+            throw new UnauthorizedException('Необходимо зайти в аккаунт');
+        }
+
+        if ($this->user->getRole() !== 'admin') {
+            throw new ForbiddenException('Недостаточно прав!');
+        }
+
+        if(!empty($_POST)) {
+            try {
+                $articleId = $comment->getArticleId();
+                $comment->edit($_POST);
+            } catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('adminer/comments/edit.php', ['error' => $e->getMessage(), 'comment' => $comment]);
+                return;
+            }
+
+            header('Location: /articles/' . $comment->getArticleId() . '#' . $comment->getId(), true, 302);
+            exit();
+        }
+
+        $this->view->renderHtml('adminer/comments/edit.php', ['comment' => $comment]);
+    }
+
     public function delete ($commentId): void
     {
         if ($this->user->getRole() !== 'admin') {
@@ -87,6 +119,13 @@ class CommentsController extends AbstractController
 
         header('Location: /articles/' . $articleId, true, 302);
         exit();
+    }
+    public function viewAllCommentsAdminer()
+    {
+        $comments = Comment::findAll();
 
+        $this->view->renderHtml('adminer/comments/comments.php', [
+            'comments' => $comments,
+        ]);
     }
 }
