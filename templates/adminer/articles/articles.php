@@ -17,7 +17,7 @@
         <th scope="col">Название</th>
         <th scope="col">Содержание</th>
         <th scope="col">Дата создания</th>
-        <th scope="col">Автор</th>
+        <th scope="col">Id Автора</th>
         <th scope="col">Редактировать</th>
         <th scope="col">Удалить</th>
     </tr>
@@ -28,7 +28,7 @@
             <tr>
                 <th scope="row"><?= $article->getId() ?></th>
                 <td><?= $article->getName() ?></td>
-                <td><?= substr($article->getText(), 0, 50) . '...'?></td>
+                <td><?= strip_tags(substr($article->getText(), 0, 50) . '...')?></td>
                 <td><?= $article->getCreatedAt() ?></td>
                 <td><?= $article->getAuthorId() ?></td>
                 <td><a href="articles/<?= $article->getId() ?>/edit">Редактировать</a></td>

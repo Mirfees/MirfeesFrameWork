@@ -18,4 +18,9 @@ abstract class AbstractController
         $this->view = new View(__DIR__ . '/../../../templates');
         $this->view->setVars('user', $this->user);
     }
+
+    public function viewAllAdminer()
+    {
+        //TODO: make a function displaying all entities in Adminer
+    }
 }
