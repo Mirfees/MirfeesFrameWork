@@ -10,7 +10,7 @@
 <?php if(!empty($error)): ?>
     <div style="color: red;"><?= $error ?></div>
 <?php endif; ?>
-    <form action="/articles/<?= $article->getId() ?>/edit" method="post">
+    <form action="/adminer/articles/<?= $article->getId() ?>/edit" method="post">
         <label for="name">Название статьи</label><br>
         <input type="text" name="name" id="name" value="<?= $_POST['name'] ?? $article->getName() ?>" size="50"><br>
         <br>
