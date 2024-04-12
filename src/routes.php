@@ -1,8 +1,6 @@
 <?php
 return [
     '~^articles/(\d+)$~' => [\MyProject\Controllers\ArticlesController::class, 'view'],
-
-
     '~^users/register$~' => [\MyProject\Controllers\UsersController::class, 'signUp'],
     '~^users/(\d+)/activate/(.+)$~' => [\MyProject\Controllers\UsersController::class, 'activate'],
     '~^articles/(\d+)/comments$~' => [\MyProject\Controllers\CommentsController::class, 'add'],
@@ -20,4 +18,6 @@ return [
     '~^adminer/comments/(\d+)/edit$~' => [\MyProject\Controllers\CommentsController::class, 'editAdminer'],
     '~^adminer/comments$~' => [\MyProject\Controllers\CommentsController::class, 'viewAllCommentsAdminer'],
     '~^adminer/users$~' => [\MyProject\Controllers\UsersController::class, 'viewAllUsersAdminer'],
+    //REST API
+    '~^api/articles$~' => [\MyProject\Controllers\ArticlesController::class, 'APIarticlesView'],
 ];

@@ -106,6 +106,28 @@ class ArticlesController extends AbstractController
             exit();
         }
         $this->view->renderHtml('adminer/articles/edit.php', ['article' => $article]);
+    }
 
+    public function APIArticlesView() {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        if ($requestMethod === 'GET') {
+            $articles = Article::findAll();
+            header_remove('Set-Cookie');
+            $httpHeaders =   array('Content-Type: application/json', 'HTTP/1.1 200 OK');
+            foreach ($httpHeaders as $httpHeader) {
+                header($httpHeader);
+            }
+            foreach ($articles as $article) {
+                $articleArray = [
+                    'id' => $article->getId(),
+                    'name' => $article->getName(),
+                    'text' => $article->getText(),
+                    'authorId' => $article->getAuthorId(),
+                    'createdAt' => $article->getCreatedAt(),
+                ];
+                $articleJson[] = json_encode($articleArray, JSON_UNESCAPED_UNICODE );
+            }
+            echo json_encode($articleJson);
+        }
     }
 }

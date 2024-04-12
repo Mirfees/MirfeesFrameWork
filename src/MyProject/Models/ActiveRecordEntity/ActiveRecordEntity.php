@@ -69,7 +69,6 @@ abstract class ActiveRecordEntity
 
     private function insert(array $mappedProperties)
     {
-
         $mappedPropertiesNotNull = array_filter($mappedProperties);
         $columns = [];
         $columns2params = [];
