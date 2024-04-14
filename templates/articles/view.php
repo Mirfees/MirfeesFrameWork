@@ -8,7 +8,15 @@ include __DIR__ . '/../header.php'; ?>
     <h1><?= $article->getName() ?></h1>
     <strong><?= $article->getCreatedAt() ?></strong>
     <p><?= $article->getText() ?></p>
-    <p>Автор: <?php echo $article->getAuthor()->getNickname();  ?></p>
+    <p>Автор:
+    <?php
+        if ($article->getAuthor()) {
+            echo $article->getAuthor()->getNickname();
+        } else {
+            echo "удален";
+        }
+
+    ?></p>
 
 
     <?php if (!empty($user)): ?>
