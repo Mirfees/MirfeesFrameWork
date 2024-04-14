@@ -32,4 +32,23 @@ class View
 
         echo $buffer;
     }
+
+    public function renderJson($json, int $code = 200)
+    {
+        header_remove('Set-Cookie');
+        http_response_code($code);
+        $httpHeaders = [
+            'Content-Type: application/json; content-type: utf-8',
+            'HTTP/1.1 200 OK'
+        ];
+        foreach ($httpHeaders as $httpHeader) {
+            header($httpHeader);
+        }
+
+        ob_start();
+        $buffer = $json;
+        ob_end_clean();
+
+        echo $buffer;
+    }
 }

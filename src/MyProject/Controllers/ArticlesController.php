@@ -112,12 +112,8 @@ class ArticlesController extends AbstractController
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         if ($requestMethod === 'GET') {
             $articles = Article::findAll();
-            header_remove('Set-Cookie');
-            $httpHeaders =   array('Content-Type: application/json', 'HTTP/1.1 200 OK');
-            foreach ($httpHeaders as $httpHeader) {
-                header($httpHeader);
-            }
-            echo json_encode($articles);
+            $json = json_encode($articles, JSON_UNESCAPED_UNICODE);
+            $this->view->renderJson($json);
         }
     }
 }
