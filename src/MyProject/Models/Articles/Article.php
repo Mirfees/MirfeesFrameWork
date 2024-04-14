@@ -80,8 +80,7 @@ class Article extends ActiveRecordEntity
 
     public function getAuthor(): ?User
     {
-        $author = User::getById($this->authorId);
-        return $author;
+        return User::getById($this->authorId);
     }
 
     public static function createFromArray(array $fields, User $author): Article
