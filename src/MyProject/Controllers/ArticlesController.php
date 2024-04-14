@@ -117,17 +117,7 @@ class ArticlesController extends AbstractController
             foreach ($httpHeaders as $httpHeader) {
                 header($httpHeader);
             }
-            foreach ($articles as $article) {
-                $articleArray = [
-                    'id' => $article->getId(),
-                    'name' => $article->getName(),
-                    'text' => $article->getText(),
-                    'authorId' => $article->getAuthorId(),
-                    'createdAt' => $article->getCreatedAt(),
-                ];
-                $articleJson[] = json_encode($articleArray, JSON_UNESCAPED_UNICODE );
-            }
-            echo json_encode($articleJson);
+            echo json_encode($articles);
         }
     }
 }
