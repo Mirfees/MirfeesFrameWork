@@ -40,7 +40,7 @@ include __DIR__ . '/../header.php'; ?>
             <?php foreach ($comments as $comment): ?>
                 <?php $author = $comment->getAuthor(); ?>
                 <p class="comment-container" id="<?= $comment->getId() ?>">
-                    <strong class="name"><?= $author->getNickName(); ?></strong><br>
+                    <strong class="name"><?= $author ? $author->getNickName() : "Удален"; ?></strong><br>
                     <strong class="date"><?= $comment->getPublicationDate(); ?></strong><br>
                     <p><?= $comment->getCommentText(); ?></p><br>
                     <?php if (!empty($user)): ?>
