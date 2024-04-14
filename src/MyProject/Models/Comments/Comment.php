@@ -56,7 +56,7 @@ class Comment extends ActiveRecordEntity
         return $this->publicationDate;
     }
 
-    public function getAuthor(): User
+    public function getAuthor(): ?User
     {
         return $user = User::getById($this->getAuthorId());
     }
