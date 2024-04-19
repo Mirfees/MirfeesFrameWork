@@ -37,14 +37,7 @@ class View
     {
         header_remove('Set-Cookie');
         http_response_code($code);
-        $httpHeaders = [
-            'Content-Type: application/json; content-type: utf-8',
-            'HTTP/1.1 200 OK'
-        ];
-        foreach ($httpHeaders as $httpHeader) {
-            header($httpHeader);
-        }
-
+        header('Content-Type: application/json; content-type: utf-8');
         ob_start();
         $buffer = json_encode($json);
         ob_end_clean();

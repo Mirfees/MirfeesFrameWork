@@ -1,4 +1,7 @@
 <?php
+
+require __DIR__ . '/vendor/autoload.php';
+
 try {
     spl_autoload_register(function (string $className) {
         $path =  __DIR__ . '/src/' . str_replace('\\', '/', $className) . '.php';

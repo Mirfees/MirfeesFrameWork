@@ -3,6 +3,11 @@
     "description": "Pure PHP Framework",
     "type": "project",
     "license": "GNU",
+    "autoload": {
+        "psr-4": {
+            "MyProject\\": "src/MyProject"
+        }
+    },
     "authors": [
         {
             "name": "Miron Fissenko",
