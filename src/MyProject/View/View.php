@@ -46,7 +46,7 @@ class View
         }
 
         ob_start();
-        $buffer = $json;
+        $buffer = json_encode($json);
         ob_end_clean();
 
         echo $buffer;

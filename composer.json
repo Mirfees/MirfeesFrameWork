@@ -1,0 +1,13 @@
+{
+    "name": "mir/mirfees-frame-work",
+    "description": "Pure PHP Framework",
+    "type": "project",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Miron Fissenko",
+            "email": "mirfees@gmail.com"
+        }
+    ],
+    "require": {}
+}
