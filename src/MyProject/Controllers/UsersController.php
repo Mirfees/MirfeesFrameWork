@@ -102,4 +102,18 @@ class UsersController extends AbstractController
         ]);
     }
 
+    public static function isAdmin(): bool
+    {
+        $currentUser =  UsersAuthService::getUserByToken();
+        if (!$currentUser) {
+            return false;
+        }
+
+        if ($currentUser->getRole() === 'admin') {
+            return true;
+        }
+
+        return false;
+    }
+
 }

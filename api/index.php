@@ -34,4 +34,7 @@ try {
 } catch (\MyProject\Exceptions\UnauthorizedException $e) {
     $view = new \MyProject\View\View(__DIR__ . '/../templates/errors');
     $view->renderJson(['error' => $e->getMessage()], 401);
+} catch (\MyProject\Exceptions\InvalidArgumentException $e) {
+    $view = new \MyProject\View\View(__DIR__ . '/../templates/errors');
+    $view->renderJson(['error' => $e->getMessage()], 401);
 }

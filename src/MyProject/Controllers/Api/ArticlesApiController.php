@@ -2,6 +2,9 @@
 
 namespace MyProject\Controllers\Api;
 
+use MyProject\Controllers\UsersController;
+use MyProject\Exceptions\ForbiddenException;
+use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Controllers\AbstractController;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\UnauthorizedException;
@@ -30,25 +33,78 @@ class ArticlesApiController extends AbstractController
     }
 
     public function add() {
-        if($_SERVER["REQUEST_METHOD"] === "POST") {
-            $input = $this->getInputData();
-            $articleFromRequest = $input['articles'][0];
-            $currentUser = UsersAuthService::getUserByToken();
+        $input = $this->getInputData();
+        $articleFromRequest = $input['articles'][0];
+        $currentUser = UsersAuthService::getUserByToken();
+        $authorId = $articleFromRequest['author_id'];
 
-            $authorId = $articleFromRequest['author_id'];
-            if ($currentUser === null) {
-                throw new UnauthorizedException("Войдите в аккаунт, чтобы добавлять статьи");
-            }
-
-            if ($currentUser->getId() !== (int) $authorId) {
-                throw new UnauthorizedException("Добавляйте статьи от своего аккаунта");
-            }
-
-            $author = User::getById($authorId);
-            $article = Article::createFromArray($articleFromRequest, $author);
-            $article->save();
-
-            header('Location: /api/articles/' . $article->getId(), true, 302);
+        if($_SERVER["REQUEST_METHOD"] !== "POST") {
+            throw new InvalidArgumentException("Неправильный метод запроса");
         }
+
+        if ($currentUser === null) {
+            throw new UnauthorizedException("Войдите в аккаунт, чтобы добавлять статьи");
+        }
+
+        if ($currentUser->getId() !== (int) $authorId) {
+            throw new UnauthorizedException("Добавляйте статьи от своего аккаунта");
+        }
+
+        $author = User::getById($authorId);
+        $article = Article::createFromArray($articleFromRequest, $author);
+        $article->save();
+
+        header('Location: /api/articles/' . $article->getId(), true, 302);
+    }
+
+    public function update(int $articleId) {
+        $currentUser = UsersAuthService::getUserByToken();
+        $article = Article::getById($articleId);
+        if($article === null) {
+            throw new NotFoundException("Такой статьи не существует");
+        }
+
+        if($_SERVER["REQUEST_METHOD"] !== "PATCH") {
+            throw new InvalidArgumentException("Неправильный метод запроса");
+        }
+
+        if (!$currentUser) {
+            throw new UnauthorizedException("Удалять статьи могут только авторизированные пользователи");
+        }
+
+        if ($currentUser->getId() !== $article->getAuthorId() && !UsersController::isAdmin()) {
+            throw new UnauthorizedException("Вы не являетесь админом или автором статьи");
+        }
+
+        $article->delete();
+
+        $this->view->renderJson([
+            'message' => "Статья с ID " . $articleId . " успешно удалена"
+        ]);
+    }
+
+    public function delete(int $articleId) {
+        $currentUser = UsersAuthService::getUserByToken();
+        $article = Article::getById($articleId);
+        if($article === null) {
+            throw new NotFoundException("Такой статьи не существует");
+        }
+
+        if($_SERVER["REQUEST_METHOD"] !== "DELETE") {
+            throw new InvalidArgumentException("Неправильный метод запроса");
+        }
+
+        if (!$currentUser) {
+            throw new UnauthorizedException("Удалять статьи могут только авторизированные пользователи");
+        }
+
+        if ($currentUser->getId() !== $article->getAuthorId() && !UsersController::isAdmin()) {
+            throw new UnauthorizedException("Вы не являетесь админом или автором статьи");
+        }
+
+        $article->delete();
+        $this->view->renderJson([
+            'message' => "Статья с ID " . $articleId . " успешно удалена"
+        ]);
     }
 }
