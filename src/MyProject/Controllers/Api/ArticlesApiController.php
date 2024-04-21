@@ -17,6 +17,10 @@ class ArticlesApiController extends AbstractController
     public function view(int $articleId) {
         $article = Article::getById($articleId);
 
+        if($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            throw new InvalidArgumentException('Неправильный метод запроса');
+        }
+
         if ($article === null) {
             throw new NotFoundException("Такой статьи нет");
         }
@@ -27,6 +31,10 @@ class ArticlesApiController extends AbstractController
     }
 
     public function viewAll() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            throw new InvalidArgumentException('Неправильный метод запроса');
+        }
+
         $articles = Article::findAll();
 
         $this->view->renderJson($articles);
@@ -58,6 +66,8 @@ class ArticlesApiController extends AbstractController
     }
 
     public function update(int $articleId) {
+        $input = $this->getInputData();
+        $articleFromRequest = $input['articles'][0];
         $currentUser = UsersAuthService::getUserByToken();
         $article = Article::getById($articleId);
         if($article === null) {
@@ -69,18 +79,17 @@ class ArticlesApiController extends AbstractController
         }
 
         if (!$currentUser) {
-            throw new UnauthorizedException("Удалять статьи могут только авторизированные пользователи");
+            throw new UnauthorizedException("Редактировать статьи могут только авторизированные пользователи");
         }
 
         if ($currentUser->getId() !== $article->getAuthorId() && !UsersController::isAdmin()) {
             throw new UnauthorizedException("Вы не являетесь админом или автором статьи");
         }
 
-        $article->delete();
+        $article->updateFromArray($articleFromRequest);
+        $article->save();
 
-        $this->view->renderJson([
-            'message' => "Статья с ID " . $articleId . " успешно удалена"
-        ]);
+        header('Location: /api/articles/' . $article->getId(), true, 302);
     }
 
     public function delete(int $articleId) {
