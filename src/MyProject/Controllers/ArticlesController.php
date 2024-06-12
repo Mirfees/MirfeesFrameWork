@@ -107,13 +107,4 @@ class ArticlesController extends AbstractController
         }
         $this->view->renderHtml('adminer/articles/edit.php', ['article' => $article]);
     }
-
-    public function APIArticlesView() {
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
-        if ($requestMethod === 'GET') {
-            $articles = Article::findAll();
-            $json = json_encode($articles, JSON_UNESCAPED_UNICODE);
-            $this->view->renderJson($json);
-        }
-    }
 }

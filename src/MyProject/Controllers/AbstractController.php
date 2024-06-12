@@ -19,8 +19,10 @@ abstract class AbstractController
         $this->view->setVars('user', $this->user);
     }
 
-    public function viewAllAdminer()
-    {
-        //TODO: make a function displaying all entities in Adminer
+    protected function getInputData() {
+        return json_decode(
+            file_get_contents('php://input'),
+            true
+        );
     }
 }
